@@ -2,6 +2,7 @@
 
 #include "hash_ctxt.h"
 #include "system.h"
+namespace ddnet_base {
 
 const SHA256_DIGEST SHA256_ZEROED = {{0}};
 
@@ -73,3 +74,4 @@ int md5_comp(MD5_DIGEST digest1, MD5_DIGEST digest2)
 {
 	return mem_comp(digest1.data, digest2.data, sizeof(digest1.data));
 }
+} // end namespace

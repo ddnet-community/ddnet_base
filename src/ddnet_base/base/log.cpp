@@ -17,6 +17,7 @@
 #if defined(CONF_PLATFORM_ANDROID)
 #include <android/log.h>
 #endif
+namespace ddnet_base {
 
 std::atomic<ILogger *> global_logger = nullptr;
 thread_local ILogger *scope_logger = nullptr;
@@ -586,3 +587,4 @@ std::string CMemoryLogger::ConcatenatedLines()
 	}
 	return Result;
 }
+} // end namespace

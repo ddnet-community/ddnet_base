@@ -11,6 +11,7 @@
 #else
 #include <engine/external/md5/md5.h>
 #endif
+namespace ddnet_base {
 
 #if defined(CONF_OPENSSL)
 // SHA256_CTX is defined in <openssl/sha.h>
@@ -33,4 +34,5 @@ void md5_init(MD5_CTX *ctxt); // NOLINT(readability-redundant-declaration, reada
 void md5_update(MD5_CTX *ctxt, const void *data, size_t data_len);
 MD5_DIGEST md5_finish(MD5_CTX *ctxt);
 
+} // end namespace
 #endif // BASE_HASH_CTXT_H

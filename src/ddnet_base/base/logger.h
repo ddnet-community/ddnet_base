@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+namespace ddnet_base {
 
 typedef void *IOHANDLE;
 
@@ -297,4 +298,5 @@ public:
 	}
 	CLogScope(const CLogScope &) = delete;
 };
+} // end namespace
 #endif // BASE_LOGGER_H

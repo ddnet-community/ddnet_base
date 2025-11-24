@@ -1,4 +1,5 @@
 #include "bezier.h"
+namespace ddnet_base {
 
 CCubicBezier CCubicBezier::With(float Start, float StartDerivative, float EndDerivative, float End)
 {
@@ -16,3 +17,4 @@ float CCubicBezier::Derivative(float t) const
 {
 	return 3 * (1 - t) * (1 - t) * (b - a) + 6 * (1 - t) * t * (c - b) + 3 * t * t * (d - c);
 }
+} // end namespace

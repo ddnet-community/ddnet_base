@@ -1,5 +1,6 @@
 /* AUTO GENERATED! DO NOT EDIT MANUALLY! See scripts/generate_unicode_tolower.py */
 #include "tolower_data.h"
+namespace ddnet_base {
 
 const std::unordered_map<int32_t, int32_t> UPPER_TO_LOWER_CODEPOINT_MAP = {
 	{65, 97},
@@ -1436,3 +1437,4 @@ const std::unordered_map<int32_t, int32_t> UPPER_TO_LOWER_CODEPOINT_MAP = {
 	{125216, 125250},
 	{125217, 125251},
 };
+} // end namespace

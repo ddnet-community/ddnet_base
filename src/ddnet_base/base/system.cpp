@@ -90,6 +90,7 @@
 #if defined(CONF_PLATFORM_EMSCRIPTEN)
 #include <emscripten/emscripten.h>
 #endif
+namespace ddnet_base {
 
 static NETSTATS network_stats = {0};
 
@@ -1093,13 +1094,6 @@ bool NETADDR::operator<(const NETADDR &other) const
 	return net_addr_comp(this, &other) < 0;
 }
 
-size_t std::hash<NETADDR>::operator()(const NETADDR &Addr) const noexcept
-{
-	size_t seed = std::hash<unsigned int>{}(Addr.type);
-	seed ^= std::hash<std::string_view>{}(std::string_view(reinterpret_cast<const char *>(Addr.ip), sizeof(Addr.ip))) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-	seed ^= std::hash<unsigned short>{}(Addr.port) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-	return seed;
-}
 
 int net_addr_comp_noport(const NETADDR *a, const NETADDR *b)
 {
@@ -4117,3 +4111,4 @@ void shell_update()
 	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 }
 #endif
+} // end namespace

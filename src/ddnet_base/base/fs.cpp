@@ -18,6 +18,7 @@
 #else
 #error NOT IMPLEMENTED
 #endif
+namespace ddnet_base {
 
 int fs_makedir(const char *path)
 {
@@ -74,3 +75,4 @@ int fs_removedir(const char *path)
 	return -1;
 #endif
 }
+} // end namespace

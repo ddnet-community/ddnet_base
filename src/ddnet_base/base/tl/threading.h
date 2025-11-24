@@ -4,6 +4,7 @@
 #include <ddnet_base/base/system.h>
 
 #include <atomic>
+namespace ddnet_base {
 
 class CSemaphore
 {
@@ -29,4 +30,5 @@ public:
 	}
 };
 
+} // end namespace
 #endif // BASE_TL_THREADING_H

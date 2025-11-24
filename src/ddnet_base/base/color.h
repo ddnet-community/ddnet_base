@@ -6,6 +6,7 @@
 
 #include <optional>
 #include <type_traits>
+namespace ddnet_base {
 
 /*
 	Title: Color handling
@@ -307,4 +308,5 @@ constexpr T color_invert(const T &col)
 template<typename T>
 std::optional<T> color_parse(const char *pStr);
 
+} // end namespace
 #endif

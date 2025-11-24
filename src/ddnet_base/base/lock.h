@@ -4,6 +4,7 @@
 #define BASE_LOCK_H
 
 #include <mutex>
+namespace ddnet_base {
 
 // Enable thread safety attributes only with clang.
 // The attributes can be safely erased when compiling with other compilers.
@@ -136,4 +137,5 @@ private:
 	CLock &m_Lock;
 };
 
+} // end namespace
 #endif

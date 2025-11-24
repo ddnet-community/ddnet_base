@@ -2,6 +2,7 @@
 #define BASE_HASH_H
 
 #include <cstddef> // size_t
+namespace ddnet_base {
 
 enum
 {
@@ -50,4 +51,5 @@ inline bool operator!=(const MD5_DIGEST &that, const MD5_DIGEST &other)
 	return !(that == other);
 }
 
+} // end namespace
 #endif // BASE_HASH_H

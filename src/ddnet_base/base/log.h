@@ -3,6 +3,7 @@
 
 #include <cstdarg>
 #include <cstdint>
+namespace ddnet_base {
 
 enum LEVEL : char
 {
@@ -86,4 +87,5 @@ struct LOG_COLOR
  */
 [[gnu::format(printf, 4, 0)]] void log_log_color_v(LEVEL level, LOG_COLOR color, const char *sys, const char *fmt, va_list args);
 
+} // end namespace
 #endif // BASE_LOG_H

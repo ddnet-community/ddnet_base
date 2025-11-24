@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <cstring>
+namespace ddnet_base {
 
 typedef uint32_t u32;
 typedef uint64_t u64;
@@ -206,3 +207,4 @@ SHA256_DIGEST sha256_finish(SHA256_CTX *ctxt)
 }
 
 #endif
+} // end namespace

@@ -1,6 +1,7 @@
 #include "color.h"
 
 #include "str.h"
+namespace ddnet_base {
 
 template<typename T>
 std::optional<T> color_parse(const char *pStr)
@@ -47,3 +48,4 @@ std::optional<T> color_parse(const char *pStr)
 }
 
 template std::optional<ColorRGBA> color_parse<ColorRGBA>(const char *);
+} // end namespace

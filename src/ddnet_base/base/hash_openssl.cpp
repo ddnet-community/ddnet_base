@@ -1,5 +1,6 @@
 #if defined(CONF_OPENSSL)
 #include "hash_ctxt.h"
+namespace ddnet_base {
 
 #ifdef __GNUC__
 // EVP requires heap allocations, let's postpone the replacement for now
@@ -39,4 +40,5 @@ MD5_DIGEST md5_finish(MD5_CTX *ctxt)
 	MD5_Final(result.data, ctxt);
 	return result;
 }
+} // end namespace
 #endif

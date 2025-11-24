@@ -2,6 +2,7 @@
 #include <base/system.h>
 
 #include <cstring>
+namespace ddnet_base {
 
 int str_copy(char *dst, const char *src, int dst_size)
 {
@@ -1250,3 +1251,4 @@ size_t str_utf8_offset_chars_to_bytes(const char *str, size_t char_offset)
 	}
 	return byte_offset;
 }
+} // end namespace

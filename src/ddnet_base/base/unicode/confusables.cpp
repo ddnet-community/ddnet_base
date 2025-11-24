@@ -3,6 +3,7 @@
 #include <base/system.h>
 
 #include <cstddef>
+namespace ddnet_base {
 
 static int str_utf8_skeleton(int ch, const int **skeleton, int *skeleton_len)
 {
@@ -104,3 +105,4 @@ int str_utf8_comp_confusable(const char *str1, const char *str2)
 #define CONFUSABLES_DATA
 #include "confusables_data.h"
 #undef CONFUSABLES_DATA
+} // end namespace

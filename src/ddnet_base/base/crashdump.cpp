@@ -9,6 +9,7 @@
 #include "system.h"
 
 #include <windows.h>
+namespace ddnet_base {
 
 static const char *CRASHDUMP_LIB = "exchndl.dll";
 static const char *CRASHDUMP_FN = "ExcHndlSetLogFileNameW";
@@ -42,10 +43,13 @@ void crashdump_init_if_available(const char *log_file_path)
 
 	exception_log_file_path_func(wide_log_file_path.c_str());
 }
+} // end namespace
 #endif
 #else
+namespace ddnet_base {
 void crashdump_init_if_available(const char *log_file_path)
 {
 	(void)log_file_path;
 }
+} // end namespace
 #endif

@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <cstdint>
+namespace ddnet_base {
 
 /**
  * Copies a string to another.
@@ -862,4 +863,5 @@ size_t str_utf8_offset_bytes_to_chars(const char *str, size_t byte_offset);
  */
 size_t str_utf8_offset_chars_to_bytes(const char *str, size_t char_offset);
 
+} // end namespace
 #endif

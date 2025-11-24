@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <cstdint>
+namespace ddnet_base {
 
 // ------------------------------------
 
@@ -429,4 +430,5 @@ typedef vector4_base<bool> bvec4;
 typedef vector4_base<int> ivec4;
 typedef vector4_base<uint8_t> ubvec4;
 
+} // end namespace
 #endif

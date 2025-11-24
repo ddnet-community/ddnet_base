@@ -10,6 +10,7 @@
 #if defined(CONF_FAMILY_UNIX)
 #include <sys/types.h> // pid_t
 #endif
+namespace ddnet_base {
 
 enum class TRISTATE
 {
@@ -79,11 +80,6 @@ typedef struct NETADDR
 	bool operator<(const NETADDR &other) const;
 } NETADDR;
 
-template<>
-struct std::hash<NETADDR>
-{
-	size_t operator()(const NETADDR &Addr) const noexcept;
-};
 
 /**
  * @ingroup Network-General
@@ -124,4 +120,5 @@ typedef pid_t PROCESS;
 constexpr PROCESS INVALID_PROCESS = 0;
 #endif
 
+} // end namespace
 #endif // BASE_TYPES_H

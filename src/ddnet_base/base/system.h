@@ -44,6 +44,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #endif
+namespace ddnet_base {
 
 /**
  * Utilities for debugging.
@@ -677,10 +678,14 @@ void thread_init_and_detach(void (*threadfunc)(void *), void *user, const char *
 #if defined(CONF_FAMILY_WINDOWS)
 typedef void *SEMAPHORE;
 #elif defined(CONF_PLATFORM_MACOS)
+} // end namespace
 #include <semaphore.h>
+namespace ddnet_base {
 typedef sem_t *SEMAPHORE;
 #elif defined(CONF_FAMILY_UNIX)
+} // end namespace
 #include <semaphore.h>
+namespace ddnet_base {
 typedef sem_t SEMAPHORE;
 #else
 #error not implemented on this platform
@@ -2133,4 +2138,5 @@ bool shell_unregister_application(const char *executable, bool *updated);
 void shell_update();
 #endif
 
+} // end namespace
 #endif

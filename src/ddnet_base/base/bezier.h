@@ -1,5 +1,6 @@
 #ifndef BASE_BEZIER_H
 #define BASE_BEZIER_H
+namespace ddnet_base {
 
 // Evaluates the Bernstein polynomial of degree 3/a one-dimensional Bezier curve
 //
@@ -24,4 +25,5 @@ public:
 	static CCubicBezier With(float Start, float StartDerivative, float EndDerivative, float End);
 };
 
+} // end namespace
 #endif // BASE_BEZIER_H

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <concepts>
 #include <cstdlib>
+namespace ddnet_base {
 
 template<typename T>
 concept Numeric = std::integral<T> || std::floating_point<T>;
@@ -170,4 +171,5 @@ constexpr bool in_range(T a, T upper)
 	return in_range(a, 0, upper);
 }
 
+} // end namespace
 #endif // BASE_MATH_H

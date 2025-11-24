@@ -3,6 +3,7 @@
 #include "hash_ctxt.h"
 
 #include <engine/external/md5/md5.h>
+namespace ddnet_base {
 
 void md5_update(MD5_CTX *ctxt, const void *data, size_t data_len)
 {
@@ -17,3 +18,4 @@ MD5_DIGEST md5_finish(MD5_CTX *ctxt)
 }
 
 #endif
+} // end namespace
