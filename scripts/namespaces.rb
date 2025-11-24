@@ -36,7 +36,7 @@ class Namespacer
       track_line(line, num)
     end
 
-    (1..100).each do |i|
+    (0..100).each do |i|
       post_include = @lines[@stats[:last_include]+i]
       break if post_include.nil?
       break if post_include[0] != '#'
