@@ -18,61 +18,62 @@
 #else
 #error NOT IMPLEMENTED
 #endif
-namespace ddnet_base {
-
-int fs_makedir(const char *path)
+namespace ddnet_base
 {
+
+	int fs_makedir(const char *path)
+	{
 #if defined(CONF_FAMILY_WINDOWS)
-	const std::wstring wide_path = windows_utf8_to_wide(path);
-	if(CreateDirectoryW(wide_path.c_str(), nullptr) != 0)
-	{
-		return 0;
-	}
-	const DWORD error = GetLastError();
-	if(error == ERROR_ALREADY_EXISTS)
-	{
-		return 0;
-	}
-	log_error("filesystem", "Failed to create folder '%s' (%ld '%s')", path, error, windows_format_system_message(error).c_str());
-	return -1;
+		const std::wstring wide_path = windows_utf8_to_wide(path);
+		if(CreateDirectoryW(wide_path.c_str(), nullptr) != 0)
+		{
+			return 0;
+		}
+		const DWORD error = GetLastError();
+		if(error == ERROR_ALREADY_EXISTS)
+		{
+			return 0;
+		}
+		log_error("filesystem", "Failed to create folder '%s' (%ld '%s')", path, error, windows_format_system_message(error).c_str());
+		return -1;
 #else
 #if defined(CONF_PLATFORM_HAIKU)
-	if(fs_is_dir(path))
-	{
-		return 0;
-	}
+		if(fs_is_dir(path))
+		{
+			return 0;
+		}
 #endif
-	if(mkdir(path, 0755) == 0 || errno == EEXIST)
-	{
-		return 0;
-	}
-	log_error("filesystem", "Failed to create folder '%s' (%d '%s')", path, errno, strerror(errno));
-	return -1;
+		if(mkdir(path, 0755) == 0 || errno == EEXIST)
+		{
+			return 0;
+		}
+		log_error("filesystem", "Failed to create folder '%s' (%d '%s')", path, errno, strerror(errno));
+		return -1;
 #endif
-}
+	}
 
-int fs_removedir(const char *path)
-{
+	int fs_removedir(const char *path)
+	{
 #if defined(CONF_FAMILY_WINDOWS)
-	const std::wstring wide_path = windows_utf8_to_wide(path);
-	if(RemoveDirectoryW(wide_path.c_str()) != 0)
-	{
-		return 0;
-	}
-	const DWORD error = GetLastError();
-	if(error == ERROR_FILE_NOT_FOUND)
-	{
-		return 0;
-	}
-	log_error("filesystem", "Failed to remove folder '%s' (%ld '%s')", path, error, windows_format_system_message(error).c_str());
-	return -1;
+		const std::wstring wide_path = windows_utf8_to_wide(path);
+		if(RemoveDirectoryW(wide_path.c_str()) != 0)
+		{
+			return 0;
+		}
+		const DWORD error = GetLastError();
+		if(error == ERROR_FILE_NOT_FOUND)
+		{
+			return 0;
+		}
+		log_error("filesystem", "Failed to remove folder '%s' (%ld '%s')", path, error, windows_format_system_message(error).c_str());
+		return -1;
 #else
-	if(rmdir(path) == 0 || errno == ENOENT)
-	{
-		return 0;
-	}
-	log_error("filesystem", "Failed to remove folder '%s' (%d '%s')", path, errno, strerror(errno));
-	return -1;
+		if(rmdir(path) == 0 || errno == ENOENT)
+		{
+			return 0;
+		}
+		log_error("filesystem", "Failed to remove folder '%s' (%d '%s')", path, errno, strerror(errno));
+		return -1;
 #endif
-}
+	}
 } // end namespace

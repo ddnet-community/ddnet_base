@@ -57,3 +57,4 @@ patch_namespace() {
 copy_code
 patch_includes
 patch_namespace
+./scripts/fix_style.py

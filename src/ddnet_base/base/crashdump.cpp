@@ -9,47 +9,49 @@
 #include "system.h"
 
 #include <windows.h>
-namespace ddnet_base {
-
-static const char *CRASHDUMP_LIB = "exchndl.dll";
-static const char *CRASHDUMP_FN = "ExcHndlSetLogFileNameW";
-void crashdump_init_if_available(const char *log_file_path)
+namespace ddnet_base
 {
-	HMODULE pCrashdumpLib = LoadLibraryA(CRASHDUMP_LIB);
-	if(pCrashdumpLib == nullptr)
+
+	static const char *CRASHDUMP_LIB = "exchndl.dll";
+	static const char *CRASHDUMP_FN = "ExcHndlSetLogFileNameW";
+	void crashdump_init_if_available(const char *log_file_path)
 	{
-		const DWORD LastError = GetLastError();
-		const std::string ErrorMsg = windows_format_system_message(LastError);
-		log_error("crashdump", "failed to load crashdump library '%s' (error %ld %s)", CRASHDUMP_LIB, LastError, ErrorMsg.c_str());
-		return;
-	}
-	const std::wstring wide_log_file_path = windows_utf8_to_wide(log_file_path);
-	// Intentional
+		HMODULE pCrashdumpLib = LoadLibraryA(CRASHDUMP_LIB);
+		if(pCrashdumpLib == nullptr)
+		{
+			const DWORD LastError = GetLastError();
+			const std::string ErrorMsg = windows_format_system_message(LastError);
+			log_error("crashdump", "failed to load crashdump library '%s' (error %ld %s)", CRASHDUMP_LIB, LastError, ErrorMsg.c_str());
+			return;
+		}
+		const std::wstring wide_log_file_path = windows_utf8_to_wide(log_file_path);
+		// Intentional
 #ifdef __MINGW32__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif
-	auto exception_log_file_path_func = (BOOL(APIENTRY *)(const WCHAR *))(GetProcAddress(pCrashdumpLib, CRASHDUMP_FN));
+		auto exception_log_file_path_func = (BOOL(APIENTRY *)(const WCHAR *))(GetProcAddress(pCrashdumpLib, CRASHDUMP_FN));
 #ifdef __MINGW32__
 #pragma GCC diagnostic pop
 #endif
-	if(exception_log_file_path_func == nullptr)
-	{
-		const DWORD LastError = GetLastError();
-		const std::string ErrorMsg = windows_format_system_message(LastError);
-		log_error("exception_handling", "could not find function '%s' in exception handling library (error %ld %s)", CRASHDUMP_FN, LastError, ErrorMsg.c_str());
-		return;
-	}
+		if(exception_log_file_path_func == nullptr)
+		{
+			const DWORD LastError = GetLastError();
+			const std::string ErrorMsg = windows_format_system_message(LastError);
+			log_error("exception_handling", "could not find function '%s' in exception handling library (error %ld %s)", CRASHDUMP_FN, LastError, ErrorMsg.c_str());
+			return;
+		}
 
-	exception_log_file_path_func(wide_log_file_path.c_str());
-}
+		exception_log_file_path_func(wide_log_file_path.c_str());
+	}
 } // end namespace
 #endif
 #else
-namespace ddnet_base {
-void crashdump_init_if_available(const char *log_file_path)
+namespace ddnet_base
 {
-	(void)log_file_path;
-}
+	void crashdump_init_if_available(const char *log_file_path)
+	{
+		(void)log_file_path;
+	}
 } // end namespace
 #endif

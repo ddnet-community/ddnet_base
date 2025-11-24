@@ -1,9 +1,10 @@
 #include "tolower_data.h"
-namespace ddnet_base {
-
-int str_utf8_tolower_codepoint(int code)
+namespace ddnet_base
 {
-	auto it = UPPER_TO_LOWER_CODEPOINT_MAP.find(code);
-	return it == UPPER_TO_LOWER_CODEPOINT_MAP.end() ? code : it->second;
-}
+
+	int str_utf8_tolower_codepoint(int code)
+	{
+		auto it = UPPER_TO_LOWER_CODEPOINT_MAP.find(code);
+		return it == UPPER_TO_LOWER_CODEPOINT_MAP.end() ? code : it->second;
+	}
 } // end namespace
