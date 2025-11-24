@@ -52,7 +52,7 @@
  */
 
 #include "md5.h"
-#include <string.h>
+#include <cstring>
 namespace ddnet_base {
 
 #undef BYTE_ORDER	/* 1 = big-endian, -1 = little-endian, 0 = unknown */

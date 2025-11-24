@@ -205,6 +205,13 @@ class Namespacer
       end
     end
 
+    # patch C++ includes
+    if @filepath.end_with?('md5.cpp')
+      if line == "#include <string.h>\n"
+        line = "#include <cstring>\n"
+      end
+    end
+
     if line.match? /^\s*#include/
         if line.match? /^\s*#include <semaphore.h>/
           @lines << close_namespace_str
