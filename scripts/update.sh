@@ -51,7 +51,7 @@ patch_namespace() {
 	# so we can use the namespace feature
 	# using C++ instead of C worked fine so far in https://github.com/ChillerDragon/antibob
 	mv src/ddnet_base/engine/external/md5/md5.c src/ddnet_base/engine/external/md5/md5.cpp
-	# ruby scripts/namespaces.rb || exit 1
+	ruby scripts/namespaces.rb || exit 1
 }
 
 copy_code

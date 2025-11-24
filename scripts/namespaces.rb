@@ -14,7 +14,7 @@ class Namespacer
       include_guard: -1,
 
       # line number of the include guard closing
-      last_endif: 0,
+      last_endif: -1,
     }
   end
 
@@ -125,7 +125,7 @@ class Namespacer
     end
 
     close_ns_at = 'eof'
-    if @filepath.end_with? '.h'
+    if @filepath.end_with?('.h') && @stats[:last_endif] != -1
       close_ns_at = 'before_endif'
     end
     if @filepath.end_with? 'hash_openssl.cpp'
@@ -141,6 +141,10 @@ class Namespacer
 
     case close_ns_at
     when 'before_endif'
+      if @stats[:last_endif] == -1
+        raise "In file #{@filepath} tried to insert after last endif but none was found"
+      end
+
       insert_before_line(@stats[:last_endif], close_namespace_str)
     when 'eof'
       insert_before_line(@lines.count, close_namespace_str)
@@ -239,5 +243,5 @@ source_files.each do |source_file|
   namespacer.patch
 end
 
-# namespacer = Namespacer.new('src/ddnet_base/base/fs.cpp')
+# namespacer = Namespacer.new('src/ddnet_base/base/unicode/tolower_data.h')
 # namespacer.patch
