@@ -105,12 +105,13 @@ class Namespacer
     end
 
     if @stats[:last_include] != -1
-      (0..100).each do |i|
-        post_include = @lines[@stats[:last_include]+i]
+      100.times do
+        post_include = @lines[@stats[:last_include]+1]
+        p post_include
         break if post_include.nil?
         break if post_include[0] != '#'
 
-        puts "shifting last include because it is followed by another post processor instruction"
+        puts "shift last include because its followed by: #{post_include}"
         @stats[:last_include] += 1
       end
     end
@@ -133,12 +134,17 @@ class Namespacer
     if @filepath.end_with? 'confusables.h'
       close_ns_at = 'eof'
     end
+    if @filepath.end_with? 'crashdump.cpp'
+      # we already close twice in the tracker
+      close_ns_at = 'never'
+    end
 
     case close_ns_at
     when 'before_endif'
       insert_before_line(@stats[:last_endif], close_namespace_str)
     when 'eof'
       insert_before_line(@lines.count, close_namespace_str)
+    when 'never'
     else
       raise 'invalid close'
     end
@@ -187,6 +193,14 @@ class Namespacer
 
     prev_line = @lines.last
 
+    if @filepath.end_with?('crashdump.cpp') && source_num > 40
+      if line.match? /void crashdump_init/
+          @lines << open_namespace_str
+      elsif line.match? /#endif/
+          @lines << close_namespace_str
+      end
+    end
+
     if line.match? /^\s*#include/
         if line.match? /^\s*#include <semaphore.h>/
           @lines << close_namespace_str
@@ -225,5 +239,5 @@ source_files.each do |source_file|
   namespacer.patch
 end
 
-# namespacer = Namespacer.new('src/ddnet_base/engine/external/md5/md5.h')
+# namespacer = Namespacer.new('src/ddnet_base/base/fs.cpp')
 # namespacer.patch
