@@ -1,7 +1,7 @@
 # ddnet_base
 
 The core helpers from the ddnet project as standalone library.
-The code in src/ is an unmodified copy from https://github.com/ddnet/ddnet/.
+The code in src/ is mostly a direct copy from https://github.com/ddnet/ddnet/.
 Full credits go to the ddnet contributors.
 
 ```cpp
