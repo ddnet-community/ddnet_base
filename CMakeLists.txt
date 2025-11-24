@@ -21,7 +21,7 @@ set(BASE_SRC
 	src/ddnet_base/base/unicode/tolower_data.cpp
 	src/ddnet_base/base/unicode/tolower.cpp
 	src/ddnet_base/base/log.cpp
-	src/ddnet_base/engine/external/md5/md5.c
+	src/ddnet_base/engine/external/md5/md5.cpp
 )
 
 add_library(ddnet_base ${BASE_SRC})

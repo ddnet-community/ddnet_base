@@ -46,5 +46,13 @@ patch_includes() {
 	done < <(find src/ -name '*.h' -print0)
 }
 
+patch_namespace() {
+	# we need to change md5 dependency from C to C++
+	# so we can use the namespace feature
+	# using C++ instead of C worked fine so far in https://github.com/ChillerDragon/antibob
+	mv src/ddnet_base/engine/external/md5/md5.c src/ddnet_base/engine/external/md5/md5.cpp
+}
+
 copy_code
 patch_includes
+patch_namespace
