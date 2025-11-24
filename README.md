@@ -10,6 +10,8 @@ Full credits go to the ddnet contributors.
 #include <cstdio>
 #include <ddnet_base/base/str.h>
 
+using namespace ddnet_base;
+
 int main() {
         char aBuf[512];
         str_copy(aBuf, "foo");

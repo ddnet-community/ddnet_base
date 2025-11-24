@@ -2,6 +2,8 @@
 
 #include <cstdio>
 
+using namespace ddnet_base;
+
 int main()
 {
 	char aBuf[512] = "";
