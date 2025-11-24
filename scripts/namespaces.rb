@@ -36,8 +36,12 @@ class Namespacer
       track_line(line, num)
     end
 
-    if @lines[@stats[:last_include]+1].match? /^\s*#endif/
-        puts "shifting last include because it is followed by an endif"
+    (1..100).each do |i|
+      post_include = @lines[@stats[:last_include]+i]
+      break if post_include.nil?
+      break if post_include[0] != '#'
+
+      puts "shifting last include because it is followed by another post processor instruction"
       @stats[:last_include] += 1
     end
 
@@ -108,6 +112,7 @@ class Namespacer
           @lines << close_namespace_str
           @lines << line
           @lines << open_namespace_str
+          return
         else
           if @filepath.end_with? 'confusables.cpp'
             if source_num > 20
@@ -117,7 +122,7 @@ class Namespacer
           end
           if source_num > 40
             puts "WARNING: high include found please double check."
-            puts "         #{@filename}:#{source_num}"
+            puts "         #{@filepath}:#{source_num}"
             puts "         #{line}"
           end
           @stats[:last_include] = @lines.count
