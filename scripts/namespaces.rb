@@ -4,12 +4,14 @@ class Namespacer
   def initialize(filepath)
     @filepath = filepath
     @lines = []
-
     @stats = {
       # line number of last include at the start of the file
       # we insert after that line so the default of -1
       # would insert at line 0
       last_include: -1,
+
+      # estimated line number of include guard opening
+      include_guard: -1,
 
       # line number of the include guard closing
       last_endif: 0,
@@ -31,21 +33,95 @@ class Namespacer
 
   private
 
+  def delete_snippet(filename, lines)
+    return unless @filepath.end_with? "/#{filename}"
+
+    match_at = 0
+
+    @lines.each_with_index do |line, i|
+      full_match = true
+      lines.each_with_index do |snip_line, k|
+        if @lines[i+k].chomp != snip_line
+          full_match = false
+          break
+        end
+      end
+      next unless full_match
+
+      match_at = i
+    end
+
+    if match_at == 0
+      puts "WARNING: snippet in file #{@filepath} not found!"
+      return
+    end
+
+    puts "matched snippet at #{match_at}"
+    @lines.slice!(match_at, lines.count)
+    shift_stats(match_at, lines.count)
+  end
+
+  def delete_snippets
+    delete_snippet(
+      "types.h",
+      [
+        "template<>",
+        "struct std::hash<NETADDR>",
+        "{",
+        "	size_t operator()(const NETADDR &Addr) const noexcept;",
+        "};"
+      ])
+    delete_snippet(
+      "system.cpp",
+      [
+        "size_t std::hash<NETADDR>::operator()(const NETADDR &Addr) const noexcept",
+        "{",
+        "	size_t seed = std::hash<unsigned int>{}(Addr.type);",
+        "	seed ^= std::hash<std::string_view>{}(std::string_view(reinterpret_cast<const char *>(Addr.ip), sizeof(Addr.ip))) + 0x9e3779b9 + (seed << 6) + (seed >> 2);",
+        "	seed ^= std::hash<unsigned short>{}(Addr.port) + 0x9e3779b9 + (seed << 6) + (seed >> 2);",
+        "	return seed;",
+        "}"
+      ])
+    delete_snippet(
+      "md5.h",
+      [
+        "#ifdef __cplusplus",
+        'extern "C" ',
+        "{",
+        "#endif",
+      ])
+    delete_snippet(
+      "md5.h",
+      [
+        "#ifdef __cplusplus",
+        '}  /* end extern "C" */',
+        "#endif"
+      ])
+  end
+
   def parse
     File.readlines(@filepath).each_with_index do |line, num|
       track_line(line, num)
     end
 
-    (0..100).each do |i|
-      post_include = @lines[@stats[:last_include]+i]
-      break if post_include.nil?
-      break if post_include[0] != '#'
+    if @stats[:last_include] != -1
+      (0..100).each do |i|
+        post_include = @lines[@stats[:last_include]+i]
+        break if post_include.nil?
+        break if post_include[0] != '#'
 
-      puts "shifting last include because it is followed by another post processor instruction"
-      @stats[:last_include] += 1
+        puts "shifting last include because it is followed by another post processor instruction"
+        @stats[:last_include] += 1
+      end
     end
 
-    insert_after_line(@stats[:last_include], open_namespace_str)
+    if @stats[:last_include] == -1 && @stats[:include_guard] != -1 && @filepath.end_with?('.h')
+      # if the file has no includes
+      # we patch after the include guard
+      insert_after_line(@stats[:include_guard], open_namespace_str)
+    else
+      insert_after_line(@stats[:last_include], open_namespace_str)
+    end
 
     close_ns_at = 'eof'
     if @filepath.end_with? '.h'
@@ -66,6 +142,8 @@ class Namespacer
     else
       raise 'invalid close'
     end
+
+    delete_snippets
 
     puts "stats: #{@stats}"
   end
@@ -107,6 +185,8 @@ class Namespacer
     # it gets out of sync on the first patch
     # use @lines.count instead
 
+    prev_line = @lines.last
+
     if line.match? /^\s*#include/
         if line.match? /^\s*#include <semaphore.h>/
           @lines << close_namespace_str
@@ -127,6 +207,10 @@ class Namespacer
           end
           @stats[:last_include] = @lines.count
         end
+    elsif line.match?(/^\s*#\s*define /)
+      if prev_line.match?(/#\s*ifndef/) && prev_line.match?(/(BASE_|_INCLUDED)/)
+        @stats[:include_guard] = @lines.count
+      end
     elsif line.match? /^\s*#endif/
       @stats[:last_endif] = @lines.count
     end
@@ -140,3 +224,6 @@ source_files.each do |source_file|
   namespacer = Namespacer.new(source_file)
   namespacer.patch
 end
+
+# namespacer = Namespacer.new('src/ddnet_base/engine/external/md5/md5.h')
+# namespacer.patch
