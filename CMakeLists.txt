@@ -66,6 +66,7 @@ if(APPLE)
 elseif(WIN32)
 	list(APPEND PLATFORM_LIBS ws2_32.lib) # Windows sockets
 	list(APPEND PLATFORM_LIBS version) # Windows GetFileVersionInfoSizeW()
+	list(APPEND PLATFORM_LIBS shlwapi.lib) # Windows PathIsRelativeW()
 
 	# See https://learn.microsoft.com/en-us/windows/win32/winprog/using-the-windows-headers
 	target_compile_definitions(ddnet_base PRIVATE NOMINMAX) # windows.h shouldn't define min/max macros
