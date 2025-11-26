@@ -59,12 +59,14 @@ set(LIB_PUBLIC_HEADERS_ENGINE_EXTERNAL
 	src/ddnet_base/engine/external/md5/md5.h
 )
 
+set(PLATFORM_LIBS)
 if(APPLE)
 	find_library(CORE_FOUNDATION_LIBRARY CoreFoundation REQUIRED)
-	target_link_libraries(ddnet_base PUBLIC ${CORE_FOUNDATION_LIBRARY})
-endif()
+	list(APPEND PLATFORM_LIBS ${CORE_FOUNDATION_LIBRARY}) # macOS CFLocaleCopyCurrent()
+elseif(WIN32)
+	list(APPEND PLATFORM_LIBS ws2_32.lib) # Windows sockets
+	list(APPEND PLATFORM_LIBS version) # Windows GetFileVersionInfoSizeW()
 
-if(WIN32)
 	# See https://learn.microsoft.com/en-us/windows/win32/winprog/using-the-windows-headers
 	target_compile_definitions(ddnet_base PRIVATE NOMINMAX) # windows.h shouldn't define min/max macros
 	target_compile_definitions(ddnet_base PRIVATE WIN32_LEAN_AND_MEAN) # windows.h shouldn't define the name IStorage
@@ -74,16 +76,18 @@ if(WIN32)
 	target_compile_definitions(ddnet_base PRIVATE _WIN32_WINNT=0x0600) # Minimum OS version (old macro, both must be defined)
 	target_compile_definitions(ddnet_base PRIVATE UNICODE) # Windows headers
 	target_compile_definitions(ddnet_base PRIVATE _UNICODE) # C-runtime
+
+	if(MSVC)
+		target_compile_options(ddnet_base PRIVATE /Zc:__cplusplus) # Fixes the __cplusplus macro
+		target_compile_options(ddnet_base PRIVATE /MP) # Use multiple cores
+		target_compile_options(ddnet_base PRIVATE /EHsc) # Only catch C++ exceptions with catch.
+		target_compile_options(ddnet_base PRIVATE /GS) # Protect the stack pointer.
+		target_compile_options(ddnet_base PRIVATE /wd4996) # Use of non-_s functions.
+		target_compile_options(ddnet_base PRIVATE /utf-8) # Use UTF-8 for source files.
+	endif()
 endif()
 
-if(MSVC)
-	target_compile_options(ddnet_base PRIVATE /Zc:__cplusplus) # Fixes the __cplusplus macro
-	target_compile_options(ddnet_base PRIVATE /MP) # Use multiple cores
-	target_compile_options(ddnet_base PRIVATE /EHsc) # Only catch C++ exceptions with catch.
-	target_compile_options(ddnet_base PRIVATE /GS) # Protect the stack pointer.
-	target_compile_options(ddnet_base PRIVATE /wd4996) # Use of non-_s functions.
-	target_compile_options(ddnet_base PRIVATE /utf-8) # Use UTF-8 for source files.
-endif()
+target_link_libraries(ddnet_base ${PLATFORM_LIBS})
 
 # install
 include(GNUInstallDirs)
