@@ -87,13 +87,9 @@ elseif(WIN32)
 		target_compile_options(ddnet_base PRIVATE /utf-8) # Use UTF-8 for source files.
 
 		# https://github.com/chillerbot/chillerbot_reply/issues/2
-		if(CMAKE_BUILD_TYPE MATCHES Debug)
-			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebug")
-			message(STATUS "MSVC: Configuring ddnet_base for static debug runtime (/MTd).")
-		else() # Release, RelWithDebInfo, MinSizeRel
-			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
-			message(STATUS "MSVC: Configuring ddnet_base for static release runtime (/MT).")
-		endif()
+		# copied from https://github.com/ddnet/ddnet/blob/1589e478be834b0b6a6da9a8a8c02f27dc8c82da/CMakeLists.txt#L804
+		# has to be kept in sync with ddnet
+		set_property(TARGET ddnet_base PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded$<${DBG}:Debug>) # Use static CRT
 	endif()
 endif()
 
