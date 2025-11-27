@@ -85,6 +85,15 @@ elseif(WIN32)
 		target_compile_options(ddnet_base PRIVATE /GS) # Protect the stack pointer.
 		target_compile_options(ddnet_base PRIVATE /wd4996) # Use of non-_s functions.
 		target_compile_options(ddnet_base PRIVATE /utf-8) # Use UTF-8 for source files.
+
+		# https://github.com/chillerbot/chillerbot_reply/issues/2
+		if(CMAKE_BUILD_TYPE MATCHES Debug)
+			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebug")
+			message(STATUS "MSVC: Configuring ddnet_base for static debug runtime (/MTd).")
+		else() # Release, RelWithDebInfo, MinSizeRel
+			set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+			message(STATUS "MSVC: Configuring ddnet_base for static release runtime (/MT).")
+		endif()
 	endif()
 endif()
 
