@@ -89,6 +89,7 @@ elseif(WIN32)
 		# https://github.com/chillerbot/chillerbot_reply/issues/2
 		# copied from https://github.com/ddnet/ddnet/blob/1589e478be834b0b6a6da9a8a8c02f27dc8c82da/CMakeLists.txt#L804
 		# has to be kept in sync with ddnet
+		set(DBG $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>)
 		set_property(TARGET ddnet_base PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded$<${DBG}:Debug>) # Use static CRT
 	endif()
 endif()
