@@ -59,6 +59,11 @@ set(LIB_PUBLIC_HEADERS_ENGINE_EXTERNAL
 	src/ddnet_base/engine/external/md5/md5.h
 )
 
+set(DBG $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>)
+message(STATUS "ddnet_base       DBG: ${DBG}")
+add_custom_target(genexdebug COMMAND ${CMAKE_COMMAND} -E echo "ddnet_base       DBG expanded to: $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>")
+add_custom_target(Default ALL DEPENDS genexdebug)
+
 set(PLATFORM_LIBS)
 if(APPLE)
 	find_library(CORE_FOUNDATION_LIBRARY CoreFoundation REQUIRED)
@@ -89,8 +94,6 @@ elseif(WIN32)
 		# https://github.com/chillerbot/chillerbot_reply/issues/2
 		# copied from https://github.com/ddnet/ddnet/blob/1589e478be834b0b6a6da9a8a8c02f27dc8c82da/CMakeLists.txt#L804
 		# has to be kept in sync with ddnet
-		set(DBG $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>)
-		message(STATUS "ddnet_base DBG: ${DBG}")
 		set_property(TARGET ddnet_base PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded$<${DBG}:Debug>) # Use static CRT
 	endif()
 endif()
