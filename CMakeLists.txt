@@ -59,10 +59,7 @@ set(LIB_PUBLIC_HEADERS_ENGINE_EXTERNAL
 	src/ddnet_base/engine/external/md5/md5.h
 )
 
-set(DBG 1)
-# message(STATUS "ddnet_base       DBG: ${DBG}")
-# add_custom_target(genexdebug COMMAND ${CMAKE_COMMAND} -E echo "ddnet_base       DBG expanded to: $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>")
-# add_custom_target(Default ALL DEPENDS genexdebug)
+set(DBG $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>)
 
 set(PLATFORM_LIBS)
 if(APPLE)
