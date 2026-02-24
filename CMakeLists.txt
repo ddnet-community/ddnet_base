@@ -4,6 +4,25 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(ddnet_base)
 
+include(CheckCXXCompilerFlag)
+
+function(add_cxx_compiler_flag_if_supported VARIABLE FLAG)
+  if(ARGC GREATER 2)
+    set(CHECKED_FLAG "${ARGV2}")
+  else()
+    set(CHECKED_FLAG "${FLAG}")
+  endif()
+  string(REGEX REPLACE "[^A-Za-z0-9]" "_" CONFIG_VARIABLE "FLAG_SUPPORTED${CHECKED_FLAG}")
+  check_cxx_compiler_flag("${CHECKED_FLAG}" ${CONFIG_VARIABLE})
+  if(${CONFIG_VARIABLE})
+    if(${VARIABLE})
+      set("${VARIABLE}" "${${VARIABLE}};${FLAG}" PARENT_SCOPE)
+    else()
+      set("${VARIABLE}" "${FLAG}" PARENT_SCOPE)
+    endif()
+  endif()
+endfunction()
+
 set(BASE_SRC
 	src/ddnet_base/base/hash_libtomcrypt.cpp
 	src/ddnet_base/base/str.cpp
@@ -92,6 +111,15 @@ elseif(WIN32)
 		set(DBG $<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>)
 		set_property(TARGET ddnet_base PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded$<${DBG}:Debug>) # Use static CRT
 	endif()
+endif()
+
+# We assume that char is signed in various places in the code. In particular,
+# the Str.StrToInts test will fail when char is not signed and names containing
+# special characters will be displayed incorrectly on servers.
+add_cxx_compiler_flag_if_supported(OUR_FLAGS -fsigned-char)
+
+if(OUR_FLAGS)
+	target_compile_options(ddnet_base PRIVATE ${OUR_FLAGS})
 endif()
 
 target_link_libraries(ddnet_base ${PLATFORM_LIBS})
