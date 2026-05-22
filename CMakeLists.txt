@@ -24,22 +24,23 @@ function(add_cxx_compiler_flag_if_supported VARIABLE FLAG)
 endfunction()
 
 set(BASE_SRC
-	src/ddnet_base/base/hash_libtomcrypt.cpp
-	src/ddnet_base/base/str.cpp
-	src/ddnet_base/base/color.cpp
-	src/ddnet_base/base/system.cpp
-	src/ddnet_base/base/hash_openssl.cpp
-	src/ddnet_base/base/color.rs
-	src/ddnet_base/base/fs.cpp
-	src/ddnet_base/base/hash_bundled.cpp
-	src/ddnet_base/base/crashdump.cpp
-	src/ddnet_base/base/hash.cpp
 	src/ddnet_base/base/bezier.cpp
-	src/ddnet_base/base/unicode
-	src/ddnet_base/base/unicode/confusables.cpp
-	src/ddnet_base/base/unicode/tolower_data.cpp
-	src/ddnet_base/base/unicode/tolower.cpp
+	src/ddnet_base/base/color.cpp
+	src/ddnet_base/base/color.rs
+	src/ddnet_base/base/crashdump.cpp
+	src/ddnet_base/base/fs.cpp
+	src/ddnet_base/base/hash.cpp
+	src/ddnet_base/base/hash_bundled.cpp
+	src/ddnet_base/base/hash_libtomcrypt.cpp
+	src/ddnet_base/base/hash_openssl.cpp
+	src/ddnet_base/base/lib.rs
 	src/ddnet_base/base/log.cpp
+	src/ddnet_base/base/rust.rs
+	src/ddnet_base/base/str.cpp
+	src/ddnet_base/base/system.cpp
+	src/ddnet_base/base/unicode/confusables.cpp
+	src/ddnet_base/base/unicode/tolower.cpp
+	src/ddnet_base/base/unicode/tolower_data.cpp
 	src/ddnet_base/engine/external/md5/md5.cpp
 )
 
