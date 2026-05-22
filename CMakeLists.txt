@@ -52,26 +52,26 @@ target_include_directories(ddnet_base
 )
 
 set(LIB_PUBLIC_HEADERS_BASE
-	src/ddnet_base/base/str.h
-	src/ddnet_base/base/hash_ctxt.h
-	src/ddnet_base/base/vmath.h
-	src/ddnet_base/base/logger.h
-	src/ddnet_base/base/system.h
+	src/ddnet_base/base/bezier.h
+	src/ddnet_base/base/color.h
 	src/ddnet_base/base/detect.h
 	src/ddnet_base/base/dynamic.h
+	src/ddnet_base/base/fs.h
 	src/ddnet_base/base/hash.h
+	src/ddnet_base/base/hash_ctxt.h
+	src/ddnet_base/base/lock.h
+	src/ddnet_base/base/log.h
+	src/ddnet_base/base/logger.h
+	src/ddnet_base/base/math.h
 	src/ddnet_base/base/rust.h
+	src/ddnet_base/base/str.h
+	src/ddnet_base/base/system.h
 	src/ddnet_base/base/tl/threading.h
 	src/ddnet_base/base/types.h
-	src/ddnet_base/base/lock.h
-	src/ddnet_base/base/fs.h
-	src/ddnet_base/base/bezier.h
-	src/ddnet_base/base/log.h
-	src/ddnet_base/base/unicode/confusables_data.h
 	src/ddnet_base/base/unicode/confusables.h
+	src/ddnet_base/base/unicode/confusables_data.h
 	src/ddnet_base/base/unicode/tolower_data.h
-	src/ddnet_base/base/color.h
-	src/ddnet_base/base/math.h
+	src/ddnet_base/base/vmath.h
 )
 
 set(LIB_PUBLIC_HEADERS_ENGINE_EXTERNAL
