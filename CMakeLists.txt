@@ -31,6 +31,7 @@ set(BASE_SRC
 	src/ddnet_base/base/color.rs
 	src/ddnet_base/base/crashdump.cpp
 	src/ddnet_base/base/dbg.cpp
+	src/ddnet_base/base/dbg.rs
 	src/ddnet_base/base/fs.cpp
 	src/ddnet_base/base/hash.cpp
 	src/ddnet_base/base/hash_bundled.cpp

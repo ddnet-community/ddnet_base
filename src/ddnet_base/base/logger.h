@@ -133,9 +133,10 @@ namespace ddnet_base
 	 * threads.
 	 *
 	 * This is logging to stdout on most platforms and to the system log on
-	 * Android.
+	 * Android. Discards log messages if stdout is not available.
 	 *
 	 * @see log_set_global_logger
+	 * @see log_logger_default
 	 */
 	void log_set_global_logger_default();
 
@@ -191,6 +192,14 @@ namespace ddnet_base
 	/**
 	 * @ingroup Log
 	 *
+	 * Sane default logger. This is logging to stdout on most platforms and to the
+	 * system log on Android. Discards log messages if stdout is not available.
+	 */
+	std::unique_ptr<ILogger> log_logger_default();
+
+	/**
+	 * @ingroup Log
+	 *
 	 * Logger for writing logs to the given file.
 	 *
 	 * @param file File to write to, must be opened for writing.
@@ -201,6 +210,8 @@ namespace ddnet_base
 	 * @ingroup Log
 	 *
 	 * Logger for writing logs to the standard output (stdout).
+	 *
+	 * @remark This function can return `nullptr` if the standard output is not available.
 	 */
 	std::unique_ptr<ILogger> log_logger_stdout();
 

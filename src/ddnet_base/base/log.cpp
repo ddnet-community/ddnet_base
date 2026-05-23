@@ -37,7 +37,13 @@ namespace ddnet_base
 		{
 			dbg_assert_failed("global logger has already been set and can only be set once");
 		}
+#if !defined(CONF_PLATFORM_EMSCRIPTEN)
+		// With Emscripten, when atexit calls log_global_logger_finish, which calls GlobalFinish, the
+		// Emscripten runtime has already exited, so we cannot wait for the AIO thread to finish and
+		// calling io_sync in the assertion logger is not possible. We instead finish the global logger
+		// manually in src/engine/client/client.cpp before exit.
 		atexit(log_global_logger_finish);
+#endif
 	}
 
 	void log_global_logger_finish()
@@ -49,16 +55,7 @@ namespace ddnet_base
 
 	void log_set_global_logger_default()
 	{
-		std::unique_ptr<ILogger> logger;
-#if defined(CONF_PLATFORM_ANDROID)
-		logger = log_logger_android();
-#else
-		logger = log_logger_stdout();
-#endif
-		if(logger)
-		{
-			log_set_global_logger(logger.release());
-		}
+		log_set_global_logger(log_logger_default().release());
 	}
 
 	ILogger *log_get_scope_logger()
@@ -218,6 +215,16 @@ namespace ddnet_base
 	std::unique_ptr<ILogger> log_logger_collection(std::vector<std::shared_ptr<ILogger>> &&vpLoggers)
 	{
 		return std::make_unique<CLoggerCollection>(std::move(vpLoggers));
+	}
+
+	std::unique_ptr<ILogger> log_logger_default()
+	{
+#if defined(CONF_PLATFORM_ANDROID)
+		std::unique_ptr<ILogger> logger = log_logger_android();
+#else
+		std::unique_ptr<ILogger> logger = log_logger_stdout();
+#endif
+		return logger == nullptr ? log_logger_noop() : std::move(logger);
 	}
 
 	class CLoggerAsync : public ILogger
