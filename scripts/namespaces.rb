@@ -17,6 +17,10 @@ class Namespacer
 
       # line number of the include guard closing
       last_endif: -1,
+
+      # this might be somehing like a #if defined(CONF_FAMILY_WINDOWS)
+      # that spans across the entire header
+      second_last_endif: -1,
     }
   end
 
@@ -135,11 +139,22 @@ class Namespacer
 
       if_scope.add_line(line)
     end
-    puts "open name space at lin #{ns_open_line} with a current if macro nest level of #{if_scope.stack.length}"
+    ns_open_if_nest_level = if_scope.stack.length
+    puts "open name space at lin #{ns_open_line} with a current if macro nest level of #{ns_open_if_nest_level}"
+    if ns_open_if_nest_level > 2
+      puts ""
+      puts "ERROR: the namespace open is nested too deply in pre processor if statements!"
+      puts "ERROR: a nest level of #{ns_open_if_nest_level} is not supported yet!"
+      puts "ERROR: failed to patch file #{@filename}"
+      exit 1
+    end
 
     close_ns_at = 'eof'
     if @filepath.end_with?('.h') && @stats[:last_endif] != -1
       close_ns_at = 'before_endif'
+      if ns_open_if_nest_level == 2
+        close_ns_at = 'before_2nd_endif'
+      end
     end
     if @filepath.end_with? 'hash_openssl.cpp'
       close_ns_at = 'before_endif'
@@ -159,6 +174,12 @@ class Namespacer
       end
 
       insert_before_line(@stats[:last_endif], close_namespace_str)
+    when 'before_2nd_endif'
+      if @stats[:second_last_endif] == -1
+        raise "In file #{@filepath} tried to insert after second last endif but none was found"
+      end
+
+      insert_before_line(@stats[:second_last_endif], close_namespace_str)
     when 'eof'
       insert_before_line(@lines.count, close_namespace_str)
     when 'never'
@@ -250,6 +271,7 @@ class Namespacer
         @stats[:include_guard] = @lines.count
       end
     elsif line.match? /^\s*#endif/
+      @stats[:second_last_endif] = @stats[:last_endif]
       @stats[:last_endif] = @lines.count
     end
 
