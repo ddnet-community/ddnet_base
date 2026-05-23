@@ -163,7 +163,7 @@ class Namespacer
     close_ns_at = 'eof'
     if @filepath.end_with?('.h') && @stats[:last_endif] != -1
       close_ns_at = 'before_endif'
-      if ns_open_if_nest_level == 2 && !@filepath.end_with?('hash_ctxt.h') && !@filepath.end_with?('/net.h')
+      if ns_open_if_nest_level == 2 && !@filepath.end_with?('hash_ctxt.h') && !@filepath.end_with?('/net.h') && !@filepath.end_with?('/system.h')
         close_ns_at = 'before_2nd_endif'
       end
     end
