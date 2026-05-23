@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative "lib/macro_if_tracker"
+
 class Namespacer
   def initialize(filepath)
     @filepath = filepath
@@ -116,13 +118,24 @@ class Namespacer
       end
     end
 
+    ns_open_line = 0
+
     if @stats[:last_include] == -1 && @stats[:include_guard] != -1 && @filepath.end_with?('.h')
       # if the file has no includes
       # we patch after the include guard
-      insert_after_line(@stats[:include_guard], open_namespace_str)
+      ns_open_line = @stats[:include_guard]
     else
-      insert_after_line(@stats[:last_include], open_namespace_str)
+      ns_open_line = @stats[:last_include]
     end
+    insert_after_line(ns_open_line, open_namespace_str)
+
+    if_scope = MacroIfTracker.new
+    File.readlines(@filepath).each_with_index do |line, num|
+      break if num >= ns_open_line
+
+      if_scope.add_line(line)
+    end
+    puts "open name space at lin #{ns_open_line} with a current if macro nest level of #{if_scope.stack.length}"
 
     close_ns_at = 'eof'
     if @filepath.end_with?('.h') && @stats[:last_endif] != -1
