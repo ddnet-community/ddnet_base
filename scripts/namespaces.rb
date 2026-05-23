@@ -78,7 +78,18 @@ class Namespacer
         "};"
       ])
     delete_snippet(
-      "system.cpp",
+      "system.cpp", # TODO: remove this entry it moved to net.cpp
+      [
+        "size_t std::hash<NETADDR>::operator()(const NETADDR &Addr) const noexcept",
+        "{",
+        "	size_t seed = std::hash<unsigned int>{}(Addr.type);",
+        "	seed ^= std::hash<std::string_view>{}(std::string_view(reinterpret_cast<const char *>(Addr.ip), sizeof(Addr.ip))) + 0x9e3779b9 + (seed << 6) + (seed >> 2);",
+        "	seed ^= std::hash<unsigned short>{}(Addr.port) + 0x9e3779b9 + (seed << 6) + (seed >> 2);",
+        "	return seed;",
+        "}"
+      ])
+    delete_snippet(
+      "net.cpp",
       [
         "size_t std::hash<NETADDR>::operator()(const NETADDR &Addr) const noexcept",
         "{",
@@ -152,9 +163,12 @@ class Namespacer
     close_ns_at = 'eof'
     if @filepath.end_with?('.h') && @stats[:last_endif] != -1
       close_ns_at = 'before_endif'
-      if ns_open_if_nest_level == 2
+      if ns_open_if_nest_level == 2 && !@filepath.end_with?('hash_ctxt.h') && !@filepath.end_with?('/net.h')
         close_ns_at = 'before_2nd_endif'
       end
+    end
+    if @filepath.end_with?('/windows.cpp') && @stats[:last_endif] != -1
+      close_ns_at = 'before_endif'
     end
     if @filepath.end_with? 'hash_openssl.cpp'
       close_ns_at = 'before_endif'
