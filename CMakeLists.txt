@@ -89,7 +89,6 @@ set(LIB_PUBLIC_HEADERS_BASE
 	src/ddnet_base/base/secure.h
 	src/ddnet_base/base/sphore.h
 	src/ddnet_base/base/str.h
-	src/ddnet_base/base/system.h
 	src/ddnet_base/base/thread.h
 	src/ddnet_base/base/time.h
 	src/ddnet_base/base/types.h
