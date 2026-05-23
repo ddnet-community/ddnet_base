@@ -148,6 +148,24 @@ if(OUR_FLAGS)
 	target_compile_options(ddnet_base PRIVATE ${OUR_FLAGS})
 endif()
 
+# TODO: for proper client logging and debugging support on android
+#       this name should match the client
+#       but not sure if this actually matters for users of this library
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+	if(ANDROID_PACKAGE_NAME)
+		target_compile_definitions(ddnet_base PRIVATE ANDROID_PACKAGE_NAME="${ANDROID_PACKAGE_NAME}")
+	else()
+		target_compile_definitions(ddnet_base PRIVATE ANDROID_PACKAGE_NAME="org.ddnet.client")
+		message(WARNING "ANDROID_PACKAGE_NAME must define the package name when compiling for Android (e.g. org.example.app)")
+	endif()
+	if(ANDROID_PACKAGE_NAME_JNI)
+		target_compile_definitions(ddnet_base PRIVATE ANDROID_PACKAGE_NAME_JNI=${ANDROID_PACKAGE_NAME_JNI})
+	else()
+		target_compile_definitions(ddnet_base PRIVATE ANDROID_PACKAGE_NAME_JNI=org_ddnet_client)
+		message(WARNING "ANDROID_PACKAGE_NAME_JNI must define the package name when compiling for Android (using underscores instead of dots, e.g. org_example_app)")
+	endif()
+endif()
+
 target_link_libraries(ddnet_base ${PLATFORM_LIBS})
 
 # install
