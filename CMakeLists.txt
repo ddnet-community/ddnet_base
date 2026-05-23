@@ -26,6 +26,7 @@ endfunction()
 set(BASE_SRC
 	src/ddnet_base/base/aio.cpp
 	src/ddnet_base/base/bezier.cpp
+	src/ddnet_base/base/bytes.cpp
 	src/ddnet_base/base/color.cpp
 	src/ddnet_base/base/color.rs
 	src/ddnet_base/base/crashdump.cpp
@@ -39,12 +40,13 @@ set(BASE_SRC
 	src/ddnet_base/base/lib.rs
 	src/ddnet_base/base/log.cpp
 	src/ddnet_base/base/mem.cpp
+	src/ddnet_base/base/net.cpp
+	src/ddnet_base/base/os.cpp
 	src/ddnet_base/base/process.cpp
 	src/ddnet_base/base/rust.rs
 	src/ddnet_base/base/secure.cpp
 	src/ddnet_base/base/sphore.cpp
 	src/ddnet_base/base/str.cpp
-	src/ddnet_base/base/system.cpp
 	src/ddnet_base/base/thread.cpp
 	src/ddnet_base/base/time.cpp
 	src/ddnet_base/base/unicode/confusables.cpp
@@ -65,7 +67,9 @@ target_include_directories(ddnet_base
 set(LIB_PUBLIC_HEADERS_BASE
 	src/ddnet_base/base/aio.h
 	src/ddnet_base/base/bezier.h
+	src/ddnet_base/base/bytes.h
 	src/ddnet_base/base/color.h
+	src/ddnet_base/base/crashdump.h
 	src/ddnet_base/base/dbg.h
 	src/ddnet_base/base/detect.h
 	src/ddnet_base/base/dynamic.h
@@ -78,6 +82,8 @@ set(LIB_PUBLIC_HEADERS_BASE
 	src/ddnet_base/base/logger.h
 	src/ddnet_base/base/math.h
 	src/ddnet_base/base/mem.h
+	src/ddnet_base/base/net.h
+	src/ddnet_base/base/os.h
 	src/ddnet_base/base/process.h
 	src/ddnet_base/base/rust.h
 	src/ddnet_base/base/secure.h

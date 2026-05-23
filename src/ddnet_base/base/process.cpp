@@ -26,7 +26,7 @@
 namespace ddnet_base
 {
 
-	int pid()
+	int process_id()
 	{
 #if defined(CONF_FAMILY_WINDOWS)
 		return _getpid();
@@ -36,7 +36,7 @@ namespace ddnet_base
 	}
 
 #if !defined(CONF_PLATFORM_ANDROID)
-	PROCESS shell_execute(const char *file, EShellExecuteWindowState window_state, const char **arguments, const size_t num_arguments)
+	PROCESS process_execute(const char *file, EShellExecuteWindowState window_state, const char **arguments, const size_t num_arguments)
 	{
 		dbg_assert((arguments == nullptr) == (num_arguments == 0), "Invalid number of arguments");
 #if defined(CONF_FAMILY_WINDOWS)
@@ -96,11 +96,11 @@ namespace ddnet_base
 #endif
 	}
 
-	int kill_process(PROCESS process)
+	int process_kill(PROCESS process)
 	{
 #if defined(CONF_FAMILY_WINDOWS)
 		BOOL success = TerminateProcess(process, 0);
-		BOOL is_alive = is_process_alive(process);
+		BOOL is_alive = process_is_alive(process);
 		if(success || !is_alive)
 		{
 			CloseHandle(process);
@@ -108,7 +108,7 @@ namespace ddnet_base
 		}
 		return false;
 #elif defined(CONF_FAMILY_UNIX)
-		if(!is_process_alive(process))
+		if(!process_is_alive(process))
 			return true;
 		int status;
 		kill(process, SIGTERM);
@@ -116,7 +116,7 @@ namespace ddnet_base
 #endif
 	}
 
-	bool is_process_alive(PROCESS process)
+	bool process_is_alive(PROCESS process)
 	{
 		if(process == INVALID_PROCESS)
 			return false;
