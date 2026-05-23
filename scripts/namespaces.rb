@@ -146,12 +146,12 @@ class Namespacer
 
     if_scope = MacroIfTracker.new
     File.readlines(@filepath).each_with_index do |line, num|
-      break if num >= ns_open_line
+      break if num > ns_open_line
 
       if_scope.add_line(line)
     end
     ns_open_if_nest_level = if_scope.stack.length
-    puts "open name space at lin #{ns_open_line} with a current if macro nest level of #{ns_open_if_nest_level}"
+    puts "open name space at line #{ns_open_line} with a current if macro nest level of #{ns_open_if_nest_level}"
     if ns_open_if_nest_level > 2
       puts ""
       puts "ERROR: the namespace open is nested too deply in pre processor if statements!"
