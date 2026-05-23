@@ -25,4 +25,4 @@ jobs:
     - name: Build and test with rspec
       run: |
         gem install rspec
-        bundle exec rspec
+        rspec scripts/spec
