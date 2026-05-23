@@ -24,23 +24,33 @@ function(add_cxx_compiler_flag_if_supported VARIABLE FLAG)
 endfunction()
 
 set(BASE_SRC
+	src/ddnet_base/base/aio.cpp
 	src/ddnet_base/base/bezier.cpp
 	src/ddnet_base/base/color.cpp
 	src/ddnet_base/base/color.rs
 	src/ddnet_base/base/crashdump.cpp
+	src/ddnet_base/base/dbg.cpp
 	src/ddnet_base/base/fs.cpp
 	src/ddnet_base/base/hash.cpp
 	src/ddnet_base/base/hash_bundled.cpp
 	src/ddnet_base/base/hash_libtomcrypt.cpp
 	src/ddnet_base/base/hash_openssl.cpp
+	src/ddnet_base/base/io.cpp
 	src/ddnet_base/base/lib.rs
 	src/ddnet_base/base/log.cpp
+	src/ddnet_base/base/mem.cpp
+	src/ddnet_base/base/process.cpp
 	src/ddnet_base/base/rust.rs
+	src/ddnet_base/base/secure.cpp
+	src/ddnet_base/base/sphore.cpp
 	src/ddnet_base/base/str.cpp
 	src/ddnet_base/base/system.cpp
+	src/ddnet_base/base/thread.cpp
+	src/ddnet_base/base/time.cpp
 	src/ddnet_base/base/unicode/confusables.cpp
 	src/ddnet_base/base/unicode/tolower.cpp
 	src/ddnet_base/base/unicode/tolower_data.cpp
+	src/ddnet_base/base/windows.cpp
 	src/ddnet_base/engine/external/md5/md5.cpp
 )
 
@@ -53,26 +63,35 @@ target_include_directories(ddnet_base
 )
 
 set(LIB_PUBLIC_HEADERS_BASE
+	src/ddnet_base/base/aio.h
 	src/ddnet_base/base/bezier.h
 	src/ddnet_base/base/color.h
+	src/ddnet_base/base/dbg.h
 	src/ddnet_base/base/detect.h
 	src/ddnet_base/base/dynamic.h
 	src/ddnet_base/base/fs.h
 	src/ddnet_base/base/hash.h
 	src/ddnet_base/base/hash_ctxt.h
+	src/ddnet_base/base/io.h
 	src/ddnet_base/base/lock.h
 	src/ddnet_base/base/log.h
 	src/ddnet_base/base/logger.h
 	src/ddnet_base/base/math.h
+	src/ddnet_base/base/mem.h
+	src/ddnet_base/base/process.h
 	src/ddnet_base/base/rust.h
+	src/ddnet_base/base/secure.h
+	src/ddnet_base/base/sphore.h
 	src/ddnet_base/base/str.h
 	src/ddnet_base/base/system.h
-	src/ddnet_base/base/tl/threading.h
+	src/ddnet_base/base/thread.h
+	src/ddnet_base/base/time.h
 	src/ddnet_base/base/types.h
 	src/ddnet_base/base/unicode/confusables.h
 	src/ddnet_base/base/unicode/confusables_data.h
 	src/ddnet_base/base/unicode/tolower_data.h
 	src/ddnet_base/base/vmath.h
+	src/ddnet_base/base/windows.h
 )
 
 set(LIB_PUBLIC_HEADERS_ENGINE_EXTERNAL

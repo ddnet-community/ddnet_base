@@ -27,6 +27,13 @@ namespace ddnet_base
 	 */
 	typedef void *IOHANDLE;
 
+	/**
+	 * Wrapper for asynchronously writing to an @link IOHANDLE @endlink.
+	 *
+	 * @ingroup File-IO
+	 */
+	typedef struct ASYNCIO ASYNCIO;
+
 	typedef int (*FS_LISTDIR_CALLBACK)(const char *name, int is_dir, int dir_type, void *user);
 
 	typedef struct
