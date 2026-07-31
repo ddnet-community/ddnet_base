@@ -164,7 +164,7 @@ class Namespacer
     if @filepath.end_with?('.h') && @stats[:last_endif] != -1
       close_ns_at = 'before_endif'
       if ns_open_if_nest_level == 2 && !@filepath.end_with?('hash_ctxt.h') && !@filepath.end_with?('/net.h') && !@filepath.end_with?('/system.h')
-        close_ns_at = 'before_2nd_endif'
+        close_ns_at = 'before_second_endif'
       end
     end
     if @filepath.end_with?('/windows.cpp') && @stats[:last_endif] != -1
@@ -188,7 +188,7 @@ class Namespacer
       end
 
       insert_before_line(@stats[:last_endif], close_namespace_str)
-    when 'before_2nd_endif'
+    when 'before_second_endif'
       if @stats[:second_last_endif] == -1
         raise "In file #{@filepath} tried to insert after second last endif but none was found"
       end
