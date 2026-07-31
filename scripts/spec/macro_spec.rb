@@ -39,7 +39,7 @@ describe 'MacroIfTracker', MacroIfTracker do
   end
 
   context 'Track nesting' do
-    it 'should grow stack to 3 on tripple nest' do
+    it 'should grow stack to 3 on triple nest' do
       tracker = MacroIfTracker.new
       tracker.add_line("// hello world")
       tracker.add_line("#ifdef WINDOWS")

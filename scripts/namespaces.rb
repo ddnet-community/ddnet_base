@@ -18,7 +18,7 @@ class Namespacer
       # line number of the include guard closing
       last_endif: -1,
 
-      # this might be somehing like a #if defined(CONF_FAMILY_WINDOWS)
+      # this might be something like a #if defined(CONF_FAMILY_WINDOWS)
       # that spans across the entire header
       second_last_endif: -1,
     }
@@ -154,7 +154,7 @@ class Namespacer
     puts "open name space at line #{ns_open_line} with a current if macro nest level of #{ns_open_if_nest_level}"
     if ns_open_if_nest_level > 2
       puts ""
-      puts "ERROR: the namespace open is nested too deply in pre processor if statements!"
+      puts "ERROR: the namespace open is nested too deeply in pre processor if statements!"
       puts "ERROR: a nest level of #{ns_open_if_nest_level} is not supported yet!"
       puts "ERROR: failed to patch file #{@filename}"
       exit 1
